@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T15:25:37+01:00
+# @Last modified time: 2019-01-30T15:30:09+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -57,7 +57,7 @@ class ImperiHome(object):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
-        print('intent_message = ' + str(intent_message))
+        print('intent_message = ' + str(intent_message.intent))
 
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
