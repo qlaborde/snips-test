@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T15:42:15+01:00
+# @Last modified time: 2019-01-30T15:49:18+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -59,11 +59,13 @@ class ImperiHome(object):
 
         print('intent_message slots = ' + str(intent_message.slots))
 
-        device_name = intent_message.slots.device_name
+        device = intent_message.slots.device
 
-        for device in device_name.all():
-            print('device = ' + str(device))
-            print('type(device.value) = ' + str(type(device.value)))
+        # for device in device_name.all():
+        #     print('device = ' + str(device))
+        #     print('type(device.value) = ' + str(type(device.value)))
+
+        print(device)
 
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
