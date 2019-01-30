@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T15:49:18+01:00
+# @Last modified time: 2019-01-30T15:52:26+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -65,7 +65,8 @@ class ImperiHome(object):
         #     print('device = ' + str(device))
         #     print('type(device.value) = ' + str(type(device.value)))
 
-        print(device)
+        print("device = " + device)
+        print("device.value = " + device.value)
 
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
