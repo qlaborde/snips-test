@@ -1,5 +1,6 @@
 # no section for preset values
 [global]
-IP=192.168.10.185
+ip=192.168.10.185
+port=8080
 [secret]
 #empty value for secret values
