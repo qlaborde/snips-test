@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T15:37:50+01:00
+# @Last modified time: 2019-01-30T15:42:15+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -61,7 +61,9 @@ class ImperiHome(object):
 
         device_name = intent_message.slots.device_name
 
-        print('device_name = ' + str(device_name))
+        for device in device_name.all():
+            print('device = ' + str(device))
+            print('type(device.value) = ' + str(type(device.value)))
 
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
@@ -69,7 +71,7 @@ class ImperiHome(object):
         url = "http://"+ip+":"+port+"/api/rest/imperihome/about"
         print('url = ' + url)
         data = requests.get(url).json();
-        hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ device_name + " is " + str(data.get("versionCode")), "")
+        hermes.publish_start_session_notification(intent_message.site_id, "The temperature of heater is " + str(data.get("versionCode")), "")
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
