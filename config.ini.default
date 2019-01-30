@@ -1,9 +1,5 @@
 [global]
-ip=192.168.10.185
-port=8080
-test1=test1
-test11=
 
 [secret]
-test2=test2
-test22=
+ip=192.168.10.185
+port=8080
