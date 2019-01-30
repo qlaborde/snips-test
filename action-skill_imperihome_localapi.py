@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T13:17:58+01:00
+# @Last modified time: 2019-01-30T14:19:08+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -36,12 +36,8 @@ class ImperiHome(object):
 
     # Get app code version
     def about_callback(self, hermes, intent_message):
-        # terminate the session first if not continue
         hermes.publish_end_session(intent_message.session_id, "")
-
-        # action code goes here...
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
-
 
         print('self.config = ' + str(self.config))
 
@@ -52,14 +48,9 @@ class ImperiHome(object):
         print('port = ' + str(port))
 
         url = "http://"+ip+":"+port+"/api/rest/imperihome/about"
-
         print('url = ' + url)
-
         data = requests.get(url).json();
-
-        # if need to speak the execution result by tts
-        hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(data.get("versionCode")), "")
-        # hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(PORT), "")
+        hermes.publish_start_session_notification(intent_message.site_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")), "")
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
