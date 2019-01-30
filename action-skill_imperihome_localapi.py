@@ -2,7 +2,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T12:08:49+01:00
+# @Last modified time: 2019-01-30T12:11:19+01:00
 
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
@@ -40,12 +40,12 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
 
-        # IP = self.config.get('global').get('IP')
+        IP = self.config.get('global').get('IP')
         #
         #  print 'IP = ' + str(IP)
 
-        url = "http://192.168.10.185:8080/api/rest/imperihome/about"
-        # url = "http://"+IP+":8080/api/rest/imperihome/about"
+        # url = "http://192.168.10.185:8080/api/rest/imperihome/about"
+        url = "http://"+IP+":8080/api/rest/imperihome/about"
 
         data = requests.get(url).json();
 
