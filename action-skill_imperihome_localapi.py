@@ -2,7 +2,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T11:57:19+01:00
+# @Last modified time: 2019-01-30T12:02:16+01:00
 
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
@@ -13,7 +13,7 @@ from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
 import io
 import requests
-import sys
+# import sys
 
 CONFIG_INI = "config.ini"
 
@@ -24,7 +24,7 @@ class ImperiHome(object):
             self.config = SnipsConfigParser.read_configuration_file(CONFIG_INI)
         except :
             self.config = None
-            sys.exit(1)
+            # sys.exit(1)
 
         # start listening to MQTT
         self.start_blocking()
@@ -40,9 +40,9 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
 
-        IP = self.config.get('global').get('IP')
-
-         print 'IP = ' + str(IP)
+        # IP = self.config.get('global').get('IP')
+        #
+        #  print 'IP = ' + str(IP)
 
         url = "http://192.168.10.185:8080/api/rest/imperihome/about"
         # url = "http://"+IP+":8080/api/rest/imperihome/about"
