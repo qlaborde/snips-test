@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T12:41:53+01:00
+# @Last modified time: 2019-01-30T12:43:08+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -46,7 +46,7 @@ class ImperiHome(object):
         IP = self.config.get('global').get('IP')
         PORT = self.config.get('global').get('PORT')
 
-         print 'IP = ' + str(IP)
+        print 'IP = ' + str(IP)
 
         # url = "http://192.168.10.185:8080/api/rest/imperihome/about"
         # url = "http://"+IP+":8080/api/rest/imperihome/about"
