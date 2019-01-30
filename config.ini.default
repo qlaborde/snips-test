@@ -1,4 +1,5 @@
 # no section for preset values
-
+[global]
+IP=192.168.10.185
 [secret]
 #empty value for secret values
