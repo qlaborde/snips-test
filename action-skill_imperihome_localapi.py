@@ -1,12 +1,11 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 # @Author: laborde
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T12:35:50+01:00
-
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-
+# @Last modified time: 2019-01-30T12:37:34+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -14,7 +13,6 @@ from hermes_python.ontology import *
 import io
 import requests
 # import sys
-
 
 
 CONFIG_INI = "config.ini"
