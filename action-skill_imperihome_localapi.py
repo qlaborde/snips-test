@@ -2,7 +2,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T08:38:23+01:00
+# @Last modified time: 2019-01-30T08:50:12+01:00
 
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
@@ -16,26 +16,15 @@ import requests
 
 CONFIG_INI = "config.ini"
 
-# If this skill is supposed to run on the satellite,
-# please get this mqtt connection info from <config.ini>
-# Hint: MQTT server is always running on the master device
-MQTT_IP_ADDR = "localhost"
-MQTT_PORT = 1883
-MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
-
 class ImperiHome(object):
 
     def __init__(self):
-        # get the configuration if needed
-        try:
-            self.config = SnipsConfigParser.read_configuration_file(CONFIG_INI)
-        except :
-            self.config = None
-
         # start listening to MQTT
         self.start_blocking()
 
-    # --> Sub callback function, one per intent
+    ############### Sub callback functions ###############
+
+    # Get app code version
     def about_callback(self, hermes, intent_message):
         # terminate the session first if not continue
         hermes.publish_end_session(intent_message.session_id, "")
@@ -56,7 +45,7 @@ class ImperiHome(object):
 
     # --> Register callback function and start MQTT
     def start_blocking(self):
-        with Hermes(MQTT_ADDR) as h:
+        with Hermes("localhost:1883") as h:
             h.subscribe_intents(self.master_intent_callback).start()
 
 if __name__ == "__main__":
