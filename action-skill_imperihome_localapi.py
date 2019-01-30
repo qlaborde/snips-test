@@ -2,7 +2,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T11:09:30+01:00
+# @Last modified time: 2019-01-30T11:23:27+01:00
 
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
@@ -19,6 +19,11 @@ CONFIG_INI = "config.ini"
 class ImperiHome(object):
 
     def __init__(self):
+        try:
+            self.config = SnipsConfigParser.read_configuration_file(CONFIG_INI)
+        except :
+            self.config = None
+
         # start listening to MQTT
         self.start_blocking()
 
@@ -33,7 +38,7 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
 
-        IP =  self.config.get("preset").get("IP")
+        IP =  self.config.get("global").get("IP")
 
         # url = "http://192.168.10.185:8080/api/rest/imperihome/about"
         url = "http://"+IP+":8080/api/rest/imperihome/about"
