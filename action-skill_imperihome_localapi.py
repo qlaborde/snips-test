@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T16:11:04+01:00
+# @Last modified time: 2019-01-30T16:12:11+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -60,8 +60,6 @@ class ImperiHome(object):
         print('intent_message slots = ' + str(intent_message.slots))
 
         device = intent_message.slots.device.first().value
-
-         slots_dict = cls.extract_slots_dictionary(intentMessage)
 
         # for device in device_name.all():
         #     print('device = ' + str(device))
