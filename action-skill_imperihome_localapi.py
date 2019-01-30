@@ -2,7 +2,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T12:13:36+01:00
+# @Last modified time: 2019-01-30T12:22:11+01:00
 
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
@@ -40,19 +40,19 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
 
-        IP = self.config.get('global').get('IP')
-        PORT = self.config.get('global').get('PORT')
+        # IP = self.config.get('global').get('IP')
+        # PORT = self.config.get('global').get('PORT')
 
         #  print 'IP = ' + str(IP)
 
-        # url = "http://192.168.10.185:8080/api/rest/imperihome/about"
-        url = "http://"+IP+":8080/api/rest/imperihome/about"
+        url = "http://192.168.10.185:8080/api/rest/imperihome/about"
+        # url = "http://"+IP+":8080/api/rest/imperihome/about"
 
         data = requests.get(url).json();
 
         # if need to speak the execution result by tts
-        # hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(data.get("versionCode")), "")
-        hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(PORT), "")
+        hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(data.get("versionCode")), "")
+        # hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(PORT), "")
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
