@@ -5,7 +5,7 @@
 # @Date:   2019-01-30T08:19:31+01:00
 # @Email:  qlaborde@evertygo.com
 # @Last modified by:   laborde
-# @Last modified time: 2019-01-30T12:43:08+01:00
+# @Last modified time: 2019-01-30T12:46:14+01:00
 
 from snipsTools import SnipsConfigParser
 from hermes_python.hermes import Hermes
@@ -47,11 +47,12 @@ class ImperiHome(object):
         PORT = self.config.get('global').get('PORT')
 
         print 'IP = ' + str(IP)
+        print 'PORT = ' + str(PORT)
 
-        # url = "http://192.168.10.185:8080/api/rest/imperihome/about"
+        url = "http://192.168.10.185:8080/api/rest/imperihome/about"
         # url = "http://"+IP+":8080/api/rest/imperihome/about"
 
-        data = requests.get("http://192.168.10.185:8080/api/rest/imperihome/about").json();
+        data = requests.get(url).json();
 
         # if need to speak the execution result by tts
         hermes.publish_start_session_notification(intent_message.site_id, "Application code version : " + str(data.get("versionCode")), "")
