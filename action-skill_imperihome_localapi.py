@@ -63,6 +63,8 @@ class ImperiHome(object):
 
         if len(intent_message.slots.device) > 0:
             device_name = intent_message.slots.device.first().value
+        elif len(intent_message.slots.room) > 0:
+            device_name = intent_message.slots.room.first().value
         else:
             device_name = 	"unknown"
 
