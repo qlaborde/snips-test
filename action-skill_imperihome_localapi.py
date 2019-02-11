@@ -74,7 +74,7 @@ class ImperiHome(object):
         url = "http://"+ip+":"+port+"/api/rest/device/temp?device=" + device_name
         print('url = ' + url)
         data = requests.get(url).json();
-        hermes.publish_start_session_notification(intent_message.site_id, "The temperature of heater is " + str(data.get("temp")), "")
+        hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ device_name +" is " + str(data.get("temp")) + str(data.get("unit")), "")
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
