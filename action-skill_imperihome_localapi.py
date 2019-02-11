@@ -71,7 +71,7 @@ class ImperiHome(object):
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
 
-        url = "http://"+ip+":"+port+"/api/rest/imperihome/temp?device=" + device_name
+        url = "http://"+ip+":"+port+"/api/rest/device/temp?device=" + device_name
         print('url = ' + url)
         data = requests.get(url).json();
         hermes.publish_start_session_notification(intent_message.site_id, "The temperature of heater is " + str(data.get("temp")), "")
