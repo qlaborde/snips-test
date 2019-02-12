@@ -87,7 +87,7 @@ class ImperiHome(object):
             else:
                 device_name = "unknown"
 
-            data = self.executeAction(self, "hum", device_name);
+            data = self.executeAction("hum", device_name);
 
             if data != None and 'hum' in data:
                 hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum")) + " %", "")
