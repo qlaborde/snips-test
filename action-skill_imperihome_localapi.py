@@ -59,24 +59,29 @@ class ImperiHome(object):
 
         print('intent_message slots = ' + str(intent_message.slots))
 
-        device_name = ""
+        try:
+            device_name = ""
 
-        if len(intent_message.slots.device) > 0:
-            device_name = intent_message.slots.device.first().value
-        elif len(intent_message.slots.room) > 0:
-            device_name = intent_message.slots.room.first().value
-        else:
-            device_name = 	"unknown"
+            if len(intent_message.slots.device) > 0:
+                device_name = intent_message.slots.device.first().value
+            elif len(intent_message.slots.room) > 0:
+                device_name = intent_message.slots.room.first().value
+            else:
+                device_name = 	"unknown"
 
-        print("device_name = " + str(device_name))
+            print("device_name = " + str(device_name))
 
-        ip = self.config.get('secret').get('ip')
-        port = self.config.get('secret').get('port')
+            ip = self.config.get('secret').get('ip')
+            port = self.config.get('secret').get('port')
 
-        url = "http://"+ip+":"+port+"/api/rest/device/temp?name=" + device_name
-        print('url = ' + url)
-        data = requests.get(url).json();
-        hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp")), "")
+            url = "http://"+ip+":"+port+"/api/rest/device/temp?name=" + device_name
+            print('url = ' + url)
+
+            data = requests.get(url).json();
+            hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp")), "")
+        except Exception as e:
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature", "")
+
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
