@@ -92,9 +92,10 @@ class ImperiHome(object):
             if data != None and 'hum' in data:
                 hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum")) + " %", "")
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity", "")
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 1", "")
         except Exception as e:
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity", "")
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 2", "")
 
 
     def executeAction(self, action, name):
