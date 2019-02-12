@@ -103,10 +103,10 @@ class ImperiHome(object):
             port = self.config.get('secret').get('port')
             url = "http://"+ip+":"+port+"/api/rest/device/"+ action +"?name=" + name
             print('url = ' + url)
-            data = requests.get(url).json();
-            return data;
+            data = requests.get(url).json()
+            return data
         except Exception as e:
-            data None
+            return None
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
