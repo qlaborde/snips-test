@@ -80,7 +80,7 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
-            data = self.executeAction("hum", device_name, None)
+            data = self.getData("hum", device_name)
             if data != None and 'hum' in data:
                 hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum")) + " %", "")
             else:
@@ -109,6 +109,17 @@ class ImperiHome(object):
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device status 2", "")
 
+    def getData(self, type, name):
+        try:
+            ip = self.config.get('secret').get('ip')
+            port = self.config.get('secret').get('port')
+            url = "http://"+ip+":"+port+"/api/rest/device/"+ type +"?name=" + name
+            print('url = ' + url)
+            data = requests.get(url).json()
+            return data
+        except Exception as e:
+            return None
+
     def executeAction(self, action, name, status):
         try:
             ip = self.config.get('secret').get('ip')
@@ -119,7 +130,7 @@ class ImperiHome(object):
                 url = url + "&status=" + str(status)
 
             print('url = ' + url)
-            data = requests.get(url).json()
+            data = requests.post(url).json()
             return data
         except Exception as e:
             return None
