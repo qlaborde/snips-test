@@ -115,6 +115,8 @@ class ImperiHome(object):
             self.about_callback(hermes, intent_message)
         if coming_intent == 'evertygo:temp':
             self.temp_callback(hermes, intent_message)
+        if coming_intent == 'evertygo:hum':
+            self.hum_callback(hermes, intent_message)
 
     # --> Register callback function and start MQTT
     def start_blocking(self):
