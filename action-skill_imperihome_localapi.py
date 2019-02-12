@@ -79,16 +79,8 @@ class ImperiHome(object):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
-            device_name = ""
-            if len(intent_message.slots.device) > 0:
-                device_name = intent_message.slots.device.first().value
-            elif len(intent_message.slots.room) > 0:
-                device_name = intent_message.slots.room.first().value
-            else:
-                device_name = "unknown"
-
-            data = self.executeAction("hum", device_name);
-
+            device_name = self.getDeviceName(intent_message)
+            data = self.executeAction("hum", device_name, None)
             if data != None and 'hum' in data:
                 hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum")) + " %", "")
             else:
@@ -97,17 +89,54 @@ class ImperiHome(object):
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 2", "")
 
+    def setStatus_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = self.getDeviceName(intent_message)
 
-    def executeAction(self, action, name):
+            status = None
+            if len(intent_message.slots.status) > 0:
+                status = intent_message.slots.status.first().value
+
+            data = self.executeAction("status", device_name, status);
+
+            if data != None and 'status' in data:
+                hermes.publish_start_session_notification(intent_message.site_id, "The new status of "+ str(device_name) +" is " + str(data.get("status")), "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device status 1", "")
+        except Exception as e:
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device status 2", "")
+
+    def executeAction(self, action, name, status):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
             url = "http://"+ip+":"+port+"/api/rest/device/"+ action +"?name=" + name
+
+            if status != None:
+                url = url + "&status=" + str(status)
+
             print('url = ' + url)
             data = requests.get(url).json()
             return data
         except Exception as e:
             return None
+
+    def getDeviceName(self, intent_message):
+        try:
+            device_name = ""
+            if len(intent_message.slots.device) > 0:
+                device_name = intent_message.slots.device.first().value
+            elif len(intent_message.slots.room) > 0:
+                device_name = intent_message.slots.room.first().value
+            else:
+                device_name = "unknown"
+
+            return device_name
+        except Exception as e:
+            return "unknown"
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
@@ -118,6 +147,8 @@ class ImperiHome(object):
             self.temp_callback(hermes, intent_message)
         if coming_intent == 'evertygo:hum':
             self.hum_callback(hermes, intent_message)
+        if coming_intent == 'evertygo:setStatus':
+            self.setStatus_callback(hermes, intent_message)
 
     # --> Register callback function and start MQTT
     def start_blocking(self):
