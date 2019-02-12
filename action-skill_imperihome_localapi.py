@@ -52,24 +52,17 @@ class ImperiHome(object):
         data = requests.get(url).json();
         hermes.publish_start_session_notification(intent_message.site_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")), "")
 
-    # Get app code version
     def temp_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
-
-        print('intent_message slots = ' + str(intent_message.slots))
-
         try:
             device_name = ""
-
             if len(intent_message.slots.device) > 0:
                 device_name = intent_message.slots.device.first().value
             elif len(intent_message.slots.room) > 0:
                 device_name = intent_message.slots.room.first().value
             else:
-                device_name = 	"unknown"
-
-            print("device_name = " + str(device_name))
+                device_name = "unknown"
 
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
@@ -82,6 +75,38 @@ class ImperiHome(object):
         except Exception as e:
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature", "")
 
+    def hum_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = ""
+            if len(intent_message.slots.device) > 0:
+                device_name = intent_message.slots.device.first().value
+            elif len(intent_message.slots.room) > 0:
+                device_name = intent_message.slots.room.first().value
+            else:
+                device_name = "unknown"
+
+            data = self.executeAction(self, "hum", device_name);
+
+            if data != None and 'hum' in data:
+                hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum")) + " %", "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity", "")
+        except Exception as e:
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity", "")
+
+
+    def executeAction(self, action, name):
+        try:
+            ip = self.config.get('secret').get('ip')
+            port = self.config.get('secret').get('port')
+            url = "http://"+ip+":"+port+"/api/rest/device/"+ action +"?name=" + name
+            print('url = ' + url)
+            data = requests.get(url).json();
+            return data;
+        except Exception as e:
+            data None
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
