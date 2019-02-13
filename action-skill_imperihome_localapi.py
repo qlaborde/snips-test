@@ -105,10 +105,30 @@ class ImperiHome(object):
             if data != None and 'status' in data:
                 hermes.publish_start_session_notification(intent_message.site_id, "The new status of "+ str(device_name) +" is " + str(data.get("status")), "")
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device status 1", "")
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't switch the device 1", "")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device status 2", "")
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't switch the device 2", "")
+
+    def setLevel_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = self.getDeviceName(intent_message)
+
+            level = None
+            if len(intent_message.slots.level) > 0:
+                level = intent_message.slots.level.first().value
+
+            data = self.executeAction("setLevel", device_name, level);
+
+            if data != None and 'level' in data :
+                hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")), "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
+        except Exception as e:
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device level 2", "")
 
     def getData(self, type, name):
         try:
@@ -173,7 +193,8 @@ class ImperiHome(object):
             self.hum_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setStatus':
             self.setStatus_callback(hermes, intent_message)
-
+        if coming_intent == 'evertygo:setLevel':
+            self.setLevel_callback(hermes, intent_message)
     # --> Register callback function and start MQTT
     def start_blocking(self):
         with Hermes("localhost:1883") as h:
