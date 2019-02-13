@@ -123,7 +123,7 @@ class ImperiHome(object):
             data = self.executeAction("setLevel", device_name, level);
 
             if data != None and 'level' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")), "")
+                hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")) + " %", "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
         except Exception as e:
@@ -149,6 +149,27 @@ class ImperiHome(object):
         except Exception as e:
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device color 2", "")
+
+    def setShutter_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = self.getDeviceName(intent_message)
+
+            level = None
+            if len(intent_message.slots.action) > 0:
+                action = intent_message.slots.action.first().value
+                level = self.formatValue(action)
+
+            data = self.executeAction("setLevel", device_name, level);
+
+            if data != None and 'level' in data :
+                hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")) + " %", "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
+        except Exception as e:
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device level 2", "")
 
     def getData(self, type, name):
         try:
@@ -195,9 +216,9 @@ class ImperiHome(object):
             value = '1'
         elif value == 'off':
             value = '0'
-        elif value == 'up':
+        elif value == 'open' or value == 'raise':
             value = '100'
-        elif value == 'down':
+        elif value == 'close':
             value = '0'
 
         return value
@@ -217,6 +238,8 @@ class ImperiHome(object):
             self.setLevel_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setColor':
             self.setColor_callback(hermes, intent_message)
+        if coming_intent == 'evertygo:setShutter':
+            self.setShutter_callback(hermes, intent_message)
 
     # --> Register callback function and start MQTT
     def start_blocking(self):
