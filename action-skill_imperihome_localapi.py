@@ -116,7 +116,7 @@ class ImperiHome(object):
             port = self.config.get('secret').get('port')
             url = "http://"+ip+":"+port+"/api/rest/devices/"+ type +"?name=" + name
             print('url = ' + url)
-            data = requests.get(url).json()
+            data = requests.get(url, timeout=2).json()
             return data
         except Exception as e:
             return None
@@ -131,7 +131,7 @@ class ImperiHome(object):
                 url = url + "&value=" + str(value)
 
             print('url = ' + url)
-            data = requests.post(url).json()
+            data = requests.post(url, timeout=2).json()
             return data
         except Exception as e:
             return None
