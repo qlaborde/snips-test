@@ -226,11 +226,11 @@ class ImperiHome(object):
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
-        if coming_intent == 'evertygo:about':
+        if coming_intent == 'evertygo:getInfo':
             self.about_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:temp':
+        if coming_intent == 'evertygo:getTemp':
             self.temp_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:hum':
+        if coming_intent == 'evertygo:getHum':
             self.hum_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setStatus':
             self.setStatus_callback(hermes, intent_message)
