@@ -98,8 +98,9 @@ class ImperiHome(object):
             status = None
             if len(intent_message.slots.status) > 0:
                 status = intent_message.slots.status.first().value
+                status = self.formatValue(status)
 
-            data = self.executeAction("status", device_name, status);
+            data = self.executeAction("setStatus", device_name, status);
 
             if data != None and 'status' in data:
                 hermes.publish_start_session_notification(intent_message.site_id, "The new status of "+ str(device_name) +" is " + str(data.get("status")), "")
@@ -113,21 +114,21 @@ class ImperiHome(object):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/device/"+ type +"?name=" + name
+            url = "http://"+ip+":"+port+"/api/rest/devices/"+ type +"?name=" + name
             print('url = ' + url)
             data = requests.get(url).json()
             return data
         except Exception as e:
             return None
 
-    def executeAction(self, action, name, status):
+    def executeAction(self, action, name, value):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/device/"+ action +"?name=" + name
+            url = "http://"+ip+":"+port+"/api/rest/devices/action/"+ action +"?name=" + name
 
-            if status != None:
-                url = url + "&status=" + str(status)
+            if value != None:
+                url = url + "&value=" + str(value)
 
             print('url = ' + url)
             data = requests.post(url).json()
@@ -148,6 +149,18 @@ class ImperiHome(object):
             return device_name
         except Exception as e:
             return "unknown"
+
+    def formatValue(self, value):
+        if value == 'on':
+            value = '1'
+        elif value == 'off':
+            value = '0'
+        elif value == 'up':
+            value = '100'
+        elif value == 'down':
+            value = '0'
+
+        return value
 
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
