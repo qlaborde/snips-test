@@ -130,6 +130,26 @@ class ImperiHome(object):
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device level 2", "")
 
+    def setColor_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = self.getDeviceName(intent_message)
+
+            color = None
+            if len(intent_message.slots.color) > 0:
+                color = intent_message.slots.color.first().value
+
+            data = self.executeAction("setColor", device_name, color);
+
+            if data != None and 'color' in data :
+                hermes.publish_start_session_notification(intent_message.site_id, "Color of "+ str(device_name) +" set to " + str(data.get("color")), "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device color 1", "")
+        except Exception as e:
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device color 2", "")
+
     def getData(self, type, name):
         try:
             ip = self.config.get('secret').get('ip')
@@ -195,6 +215,9 @@ class ImperiHome(object):
             self.setStatus_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setLevel':
             self.setLevel_callback(hermes, intent_message)
+        if coming_intent == 'evertygo:setColor':
+            self.setColor_callback(hermes, intent_message)
+
     # --> Register callback function and start MQTT
     def start_blocking(self):
         with Hermes("localhost:1883") as h:
