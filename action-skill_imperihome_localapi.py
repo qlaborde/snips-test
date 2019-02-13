@@ -56,24 +56,16 @@ class ImperiHome(object):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
-            device_name = ""
-            if len(intent_message.slots.device) > 0:
-                device_name = intent_message.slots.device.first().value
-            elif len(intent_message.slots.room) > 0:
-                device_name = intent_message.slots.room.first().value
+            device_name = self.getDeviceName(intent_message)
+
+            data = self.getData("temp", device_name)
+            if data != None and 'temp' in data:
+                hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp")), "")
             else:
-                device_name = "unknown"
-
-            ip = self.config.get('secret').get('ip')
-            port = self.config.get('secret').get('port')
-
-            url = "http://"+ip+":"+port+"/api/rest/device/temp?name=" + device_name
-            print('url = ' + url)
-
-            data = requests.get(url).json();
-            hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp")), "")
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 1", "")
         except Exception as e:
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature", "")
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 2", "")
 
     def hum_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
