@@ -97,6 +97,33 @@ class ImperiHome(object):
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 2", "")
 
+    def getLevel_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = self.getDeviceName(intent_message)
+            data = self.getData(device_name)
+            if data != None and 'level' in data:
+                type = str(data.get("level").get("type"))
+                level = str(data.get("level").get("value"))
+                res = "The " + str(device_name) +" level is " + level + " %"
+                if type == 'shutter' :
+                    if level == 0:
+                        res = str(device_name) +" is close"
+                    elif level >= 100:
+                        res = str(device_name) +" is open"
+                    else:
+                        res = str(device_name) +" is open at " + level + " %"
+                if type == 'light' :
+                    res = "The luminosity of "+ str(device_name) +" is " + level + " %"
+
+                hermes.publish_start_session_notification(intent_message.site_id, res, "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device level 1", "")
+        except Exception as e:
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 2", "")
+
     def setStatus_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -242,6 +269,8 @@ class ImperiHome(object):
             self.getHum_callback(hermes, intent_message)
         if coming_intent == 'evertygo:getStatus':
             self.getStatus_callback(hermes, intent_message)
+        if coming_intent == 'evertygo:getLevel':
+            self.getLevel_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setStatus':
             self.setStatus_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setLevel':
