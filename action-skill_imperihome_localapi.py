@@ -106,7 +106,7 @@ class ImperiHome(object):
             if data != None and 'level' in data:
                 type = str(data.get("level").get("type"))
                 level = data.get("level").get("value")
-                res = "The " + str(device_name) +" level is " + level + " %"
+                res = "The " + str(device_name) +" level is " + str(level) + " %"
                 if type == 'shutter' :
                     print('level = ' + str(level))
                     if level == 0:
@@ -114,9 +114,9 @@ class ImperiHome(object):
                     elif level >= 100:
                         res = str(device_name) +" is open"
                     else:
-                        res = str(device_name) +" is open at " + level + " %"
+                        res = str(device_name) +" is open at " + str(level) + " %"
                 if type == 'light' :
-                    res = "The luminosity of "+ str(device_name) +" is " + level + " %"
+                    res = "The luminosity of "+ str(device_name) +" is " + str(level) + " %"
 
                 hermes.publish_start_session_notification(intent_message.site_id, res, "")
             else:
