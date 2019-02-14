@@ -152,11 +152,11 @@ class ImperiHome(object):
         try:
             device_name = self.getDeviceName(intent_message)
 
-            level = None
-            if len(intent_message.slots.level) > 0:
-                level = intent_message.slots.level.first().value
+            value = None
+            if len(intent_message.slots.value) > 0:
+                value = intent_message.slots.value.first().value
 
-            data = self.executeAction("setLevel", device_name, level);
+            data = self.executeAction("setLevel", device_name, value);
 
             if data != None and 'level' in data :
                 hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")) + " %", "")
