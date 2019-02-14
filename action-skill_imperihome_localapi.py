@@ -108,6 +108,8 @@ class ImperiHome(object):
                 level = str(data.get("level").get("value"))
                 res = "The " + str(device_name) +" level is " + level + " %"
                 if type == 'shutter' :
+                    print('type(level) = ' + str(type(level)))
+                    print('level = ' + str(level))
                     if level == 0:
                         res = str(device_name) +" is close"
                     elif level >= 100:
