@@ -35,7 +35,7 @@ class ImperiHome(object):
     ############### Sub callback functions ###############
 
     # Get app code version
-    def about_callback(self, hermes, intent_message):
+    def getInfo_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
@@ -52,7 +52,7 @@ class ImperiHome(object):
         data = requests.get(url).json();
         hermes.publish_start_session_notification(intent_message.site_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")), "")
 
-    def temp_callback(self, hermes, intent_message):
+    def getTemp_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
@@ -67,7 +67,7 @@ class ImperiHome(object):
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 2", "")
 
-    def hum_callback(self, hermes, intent_message):
+    def getHum_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
@@ -80,6 +80,22 @@ class ImperiHome(object):
         except Exception as e:
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 2", "")
+
+    def getStatus_callback(self, hermes, intent_message):
+        hermes.publish_end_session(intent_message.session_id, "")
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
+        try:
+            device_name = self.getDeviceName(intent_message)
+            data = self.getData(device_name)
+            if data != None and 'status' in data:
+                status = 'on' if data.get("status").get("value") == True else 'off'
+                res = str(device_name) +" is " + str(status)
+                hermes.publish_start_session_notification(intent_message.site_id, res, "")
+            else:
+                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 1", "")
+        except Exception as e:
+            print('e = ' + str(e))
+            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 2", "")
 
     def setStatus_callback(self, hermes, intent_message):
         hermes.publish_end_session(intent_message.session_id, "")
@@ -219,11 +235,13 @@ class ImperiHome(object):
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
         if coming_intent == 'evertygo:getInfo':
-            self.about_callback(hermes, intent_message)
+            self.getInfo_callback(hermes, intent_message)
         if coming_intent == 'evertygo:getTemp':
-            self.temp_callback(hermes, intent_message)
+            self.getTemp_callback(hermes, intent_message)
         if coming_intent == 'evertygo:getHum':
-            self.hum_callback(hermes, intent_message)
+            self.getHum_callback(hermes, intent_message)
+        if coming_intent == 'evertygo:getStatus':
+            self.getStatus_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setStatus':
             self.setStatus_callback(hermes, intent_message)
         if coming_intent == 'evertygo:setLevel':
