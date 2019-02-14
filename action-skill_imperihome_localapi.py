@@ -58,9 +58,9 @@ class ImperiHome(object):
         try:
             device_name = self.getDeviceName(intent_message)
 
-            data = self.getData("temp", device_name)
+            data = self.getData(device_name)
             if data != None and 'temp' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp")), "")
+                hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp").get("value")), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 1", "")
         except Exception as e:
@@ -72,9 +72,9 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
-            data = self.getData("hum", device_name)
+            data = self.getData(device_name)
             if data != None and 'hum' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum")) + " %", "")
+                hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum").get("value")) + " %", "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 1", "")
         except Exception as e:
@@ -163,11 +163,11 @@ class ImperiHome(object):
             print('e = ' + str(e))
             hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device level 2", "")
 
-    def getData(self, type, name):
+    def getData(self, name):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/devices/"+ type +"?name=" + name
+            url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name
             print('url = ' + url)
             data = requests.get(url, timeout=2).json()
             return data
