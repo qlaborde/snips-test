@@ -105,14 +105,13 @@ class ImperiHome(object):
             data = self.getData(device_name)
             if data != None and 'level' in data:
                 type = str(data.get("level").get("type"))
-                level = str(data.get("level").get("value"))
+                level = data.get("level").get("value")
                 res = "The " + str(device_name) +" level is " + level + " %"
                 if type == 'shutter' :
-                    # print('type(level) = ' + type(level))
-                    print('level = ' + level)
-                    if level == '0':
+                    print('level = ' + str(level))
+                    if level == 0:
                         res = str(device_name) +" is close"
-                    elif level == '100':
+                    elif level >= 100:
                         res = str(device_name) +" is open"
                     else:
                         res = str(device_name) +" is open at " + level + " %"
