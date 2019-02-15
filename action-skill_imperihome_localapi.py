@@ -60,7 +60,7 @@ class ImperiHome(object):
 
             data = self.getData(device_name)
             if data != None and 'temp' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, "The temperature of "+ str(device_name) +" is " + str(data.get("temp").get("value")), "")
+                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("temp").get("message")), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 1", "")
         except Exception as e:
@@ -74,7 +74,7 @@ class ImperiHome(object):
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'hum' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, "The Humidity of "+ str(device_name) +" is " + str(data.get("hum").get("value")) + " %", "")
+                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("hum").get("message")), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 1", "")
         except Exception as e:
@@ -88,9 +88,9 @@ class ImperiHome(object):
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'status' in data:
-                status = 'on' if data.get("status").get("value") == True else 'off'
-                res = str(device_name) +" is " + str(status)
-                hermes.publish_start_session_notification(intent_message.site_id, res, "")
+                # status = 'on' if data.get("status").get("value") == True else 'off'
+                # res = str(device_name) +" is " + str(status)
+                hermes.publish_start_session_notification(intent_message.site_id, data.get("status").get("message"), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 1", "")
         except Exception as e:
@@ -104,21 +104,21 @@ class ImperiHome(object):
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'level' in data:
-                type = str(data.get("level").get("type"))
-                level = data.get("level").get("value")
-                res = "The " + str(device_name) +" level is " + str(level) + " %"
-                if type == 'shutter' :
-                    print('level = ' + str(level))
-                    if level == 0:
-                        res = str(device_name) +" is close"
-                    elif level >= 100:
-                        res = str(device_name) +" is open"
-                    else:
-                        res = str(device_name) +" is open at " + str(level) + " %"
-                if type == 'light' :
-                    res = "The luminosity of "+ str(device_name) +" is " + str(level) + " %"
+                # type = str(data.get("level").get("type"))
+                # level = data.get("level").get("value")
+                # res = "The " + str(device_name) +" level is " + str(level) + " %"
+                # if type == 'shutter' :
+                #     print('level = ' + str(level))
+                #     if level == 0:
+                #         res = str(device_name) +" is close"
+                #     elif level >= 100:
+                #         res = str(device_name) +" is open"
+                #     else:
+                #         res = str(device_name) +" is open at " + str(level) + " %"
+                # if type == 'light' :
+                #     res = "The luminosity of "+ str(device_name) +" is " + str(level) + " %"
 
-                hermes.publish_start_session_notification(intent_message.site_id, res, "")
+                hermes.publish_start_session_notification(intent_message.site_id, data.get("level").get("message"), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device level 1", "")
         except Exception as e:
@@ -138,8 +138,8 @@ class ImperiHome(object):
 
             data = self.executeAction("setStatus", device_name, status);
 
-            if data != None and 'status' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, "The new status of "+ str(device_name) +" is " + str(data.get("status")), "")
+            if data != None and 'status' in data and 'message' in data:
+                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't switch the device 1", "")
         except Exception as e:
@@ -158,8 +158,8 @@ class ImperiHome(object):
 
             data = self.executeAction("setLevel", device_name, value);
 
-            if data != None and 'level' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")) + " %", "")
+            if data != None and 'level' in data and 'message' in data :
+                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")) + " %", "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
         except Exception as e:
@@ -178,8 +178,8 @@ class ImperiHome(object):
 
             data = self.executeAction("setColor", device_name, color);
 
-            if data != None and 'color' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, "Color of "+ str(device_name) +" set to " + str(data.get("color")), "")
+            if data != None and 'color' in data and 'message' in data :
+                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device color 1", "")
         except Exception as e:
@@ -199,8 +199,8 @@ class ImperiHome(object):
 
             data = self.executeAction("setLevel", device_name, level);
 
-            if data != None and 'level' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, "Level of "+ str(device_name) +" set to " + str(data.get("level")) + " %", "")
+            if data != None and 'level' in data and 'message' in data :
+                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
         except Exception as e:
