@@ -63,7 +63,7 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
-                print('device_name = ' + device_name)
+                print('device_name = ' + str(device_name))
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 1")
         except Exception as e:
             print('e = ' + str(e))
