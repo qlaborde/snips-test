@@ -207,7 +207,8 @@ class ImperiHome(object):
             port = self.config.get('secret').get('port')
             print('port = ' + str(port))
             url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name + "&lang=en"
-            print('url = ' + str(url.encode('utf-8')))
+            print('dfbvrbrnbfg')
+            print('url = ' + str(url.decode('utf-8')))
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
             return data
