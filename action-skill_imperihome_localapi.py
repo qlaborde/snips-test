@@ -104,20 +104,6 @@ class ImperiHome(object):
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'level' in data:
-                # type = str(data.get("level").get("type"))
-                # level = data.get("level").get("value")
-                # res = "The " + str(device_name) +" level is " + str(level) + " %"
-                # if type == 'shutter' :
-                #     print('level = ' + str(level))
-                #     if level == 0:
-                #         res = str(device_name) +" is close"
-                #     elif level >= 100:
-                #         res = str(device_name) +" is open"
-                #     else:
-                #         res = str(device_name) +" is open at " + str(level) + " %"
-                # if type == 'light' :
-                #     res = "The luminosity of "+ str(device_name) +" is " + str(level) + " %"
-
                 hermes.publish_start_session_notification(intent_message.site_id, data.get("level").get("message"), "")
             else:
                 hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device level 1", "")
@@ -214,6 +200,7 @@ class ImperiHome(object):
             url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name + "&lang=en"
             print('url = ' + url)
             data = requests.get(url, timeout=2).json()
+            print('data = ' + str(data))
             return data
         except Exception as e:
             return None
