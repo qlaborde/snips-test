@@ -203,7 +203,7 @@ class ImperiHome(object):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name + "&lang=en"
+            url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name.encode('utf-8') + "&lang=en"
             print('url = ' + url)
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
