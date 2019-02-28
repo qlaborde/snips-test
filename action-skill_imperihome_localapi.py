@@ -60,8 +60,6 @@ class ImperiHome(object):
             data = self.getData(device_name)
             if data != None and 'temp' in data:
                 hermes.publish_end_session(intent_message.session_id, str(data.get("temp").get("message")))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 1")
         except Exception as e:
@@ -90,8 +88,6 @@ class ImperiHome(object):
             data = self.getData(device_name)
             if data != None and 'status' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("status").get("message"))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 1")
         except Exception as e:
@@ -105,8 +101,6 @@ class ImperiHome(object):
             data = self.getData(device_name)
             if data != None and 'level' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("level").get("message"))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device level 1")
         except Exception as e:
@@ -127,8 +121,6 @@ class ImperiHome(object):
 
             if data != None and 'status' in data and 'message' in data:
                 hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't switch the device 1")
         except Exception as e:
@@ -148,8 +140,6 @@ class ImperiHome(object):
 
             if data != None and 'level' in data and 'message' in data :
                 hermes.publish_end_session(intent_message.session_id, str(data.get("message")) + " %")
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
         except Exception as e:
@@ -169,8 +159,6 @@ class ImperiHome(object):
 
             if data != None and 'color' in data and 'message' in data :
                 hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device color 1")
         except Exception as e:
@@ -191,8 +179,6 @@ class ImperiHome(object):
 
             if data != None and 'level' in data and 'message' in data :
                 hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
         except Exception as e:
