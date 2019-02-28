@@ -57,7 +57,7 @@ class ImperiHome(object):
         try:
             device_name = self.getDeviceName(intent_message)
 
-            data = self.getData(device_name)
+            data = self.getData(device_name.encode('utf-8'))
             if data != None and 'temp' in data:
                 hermes.publish_end_session(intent_message.session_id, str(data.get("temp").get("message")))
             elif data != None and 'error' in data:
@@ -201,11 +201,12 @@ class ImperiHome(object):
 
     def getData(self, name):
         try:
+            print('name = ' + str(name))
             ip = self.config.get('secret').get('ip')
             print('ip = ' + str(ip))
             port = self.config.get('secret').get('port')
             print('port = ' + str(port))
-            url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name.encode('utf-8') + "&lang=en"
+            url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + name + "&lang=en"
             print('url = ' + url)
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
