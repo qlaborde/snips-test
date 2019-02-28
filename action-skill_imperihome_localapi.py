@@ -36,7 +36,6 @@ class ImperiHome(object):
 
     # Get app code version
     def getInfo_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
 
         print('self.config = ' + str(self.config))
@@ -50,71 +49,63 @@ class ImperiHome(object):
         url = "http://"+ip+":"+port+"/api/rest/imperihome/about"
         print('url = ' + url)
         data = requests.get(url).json();
-        hermes.publish_start_session_notification(intent_message.site_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")), "")
+        hermes.publish_end_session(intent_message.session_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")))
 
     def getTemp_callback(self, hermes, intent_message):
-        # hermes.publish_end_session(intent_message.session_id, "")
+        # hermes.publish_end_session(intent_message.session_id)
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
 
             data = self.getData(device_name)
             if data != None and 'temp' in data:
-                # hermes.publish_start_session_notification(intent_message.site_id, str(data.get("temp").get("message")), "")
                 hermes.publish_end_session(intent_message.session_id, str(data.get("temp").get("message")))
             else:
-                # hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 1", "")
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device temperature 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 2")
 
     def getHum_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'hum' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("hum").get("message")), "")
+                hermes.publish_end_session(intent_message.session_id, str(data.get("hum").get("message")))
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device humidity 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device humidity 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device humidity 2")
 
     def getStatus_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'status' in data:
-                # status = 'on' if data.get("status").get("value") == True else 'off'
-                # res = str(device_name) +" is " + str(status)
-                hermes.publish_start_session_notification(intent_message.site_id, data.get("status").get("message"), "")
+                hermes.publish_end_session(intent_message.session_id, data.get("status").get("message"))
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 2")
 
     def getLevel_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'level' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, data.get("level").get("message"), "")
+                hermes.publish_end_session(intent_message.session_id, data.get("level").get("message"))
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device level 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device level 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't get the device status 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 2")
 
     def setStatus_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
@@ -127,15 +118,14 @@ class ImperiHome(object):
             data = self.executeAction("setStatus", device_name, status);
 
             if data != None and 'status' in data and 'message' in data:
-                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")), "")
+                hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't switch the device 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't switch the device 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't switch the device 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't switch the device 2")
 
     def setLevel_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
@@ -147,15 +137,14 @@ class ImperiHome(object):
             data = self.executeAction("setLevel", device_name, value);
 
             if data != None and 'level' in data and 'message' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")) + " %", "")
+                hermes.publish_end_session(intent_message.session_id, str(data.get("message")) + " %")
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device level 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device level 2")
 
     def setColor_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
@@ -167,15 +156,14 @@ class ImperiHome(object):
             data = self.executeAction("setColor", device_name, color);
 
             if data != None and 'color' in data and 'message' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")), "")
+                hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device color 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device color 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device color 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device color 2")
 
     def setShutter_callback(self, hermes, intent_message):
-        hermes.publish_end_session(intent_message.session_id, "")
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
@@ -188,12 +176,12 @@ class ImperiHome(object):
             data = self.executeAction("setLevel", device_name, level);
 
             if data != None and 'level' in data and 'message' in data :
-                hermes.publish_start_session_notification(intent_message.site_id, str(data.get("message")), "")
+                hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
             else:
-                hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't set the device level 1", "")
+                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_start_session_notification(intent_message.site_id, "Sorry, I can't et the device level 2", "")
+            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device level 2")
 
     def getData(self, name):
         try:
