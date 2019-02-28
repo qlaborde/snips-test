@@ -56,7 +56,6 @@ class ImperiHome(object):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
-
             data = self.getData(device_name)
             if data != None and 'temp' in data:
                 hermes.publish_end_session(intent_message.session_id, str(data.get("temp").get("message")))
@@ -73,8 +72,8 @@ class ImperiHome(object):
             data = self.getData(device_name)
             if data != None and 'hum' in data:
                 hermes.publish_end_session(intent_message.session_id, str(data.get("hum").get("message")))
-            elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+            # elif data != None and 'error' in data:
+            #     hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device humidity 1")
         except Exception as e:
