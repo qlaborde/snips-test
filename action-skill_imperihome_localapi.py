@@ -12,6 +12,7 @@ from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
 import io
 import requests
+import os
 # import sys
 
 
@@ -208,13 +209,12 @@ class ImperiHome(object):
             # print('name.decode(utf-8) = ' + name.decode('utf-8'))
 
 
-            print("type name = " + str(type(name)))
-
-            print(u'name = ' + name)
-
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = u"http://"+ip+u":"+port+u"/api/rest/devices/data?name=" + name.decode('utf-8') + u"&lang=en"
+
+            url = os.path.join("http://", ip, ":", port, "/api/rest/devices/data?name=", name, "&lang=en")
+
+            # url = u"http://"+ip+u":"+port+u"/api/rest/devices/data?name=" + name.decode('utf-8') + u"&lang=en"
             print("type url = " + str(type(url)))
 
             print('dfbvrbrnbfg')
