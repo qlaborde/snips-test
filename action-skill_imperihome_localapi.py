@@ -125,7 +125,7 @@ class ImperiHome(object):
                 status = intent_message.slots.status.first().value
                 status = self.formatValue(status)
 
-            data = self.executeAction("setStatus", device_name, status);
+            data = self.executeAction(u"setStatus", device_name, status);
 
             if data != None and 'status' in data and 'message' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("message"))
@@ -146,7 +146,7 @@ class ImperiHome(object):
             if len(intent_message.slots.value) > 0:
                 value = intent_message.slots.value.first().value
 
-            data = self.executeAction("setLevel", device_name, value);
+            data = self.executeAction(u"setLevel", device_name, value);
 
             if data != None and 'level' in data and 'message' in data :
                 hermes.publish_end_session(intent_message.session_id, data.get("message") + u" %")
@@ -167,7 +167,7 @@ class ImperiHome(object):
             if len(intent_message.slots.color) > 0:
                 color = intent_message.slots.color.first().value
 
-            data = self.executeAction("setColor", device_name, color);
+            data = self.executeAction(u"setColor", device_name, color);
 
             if data != None and 'color' in data and 'message' in data :
                 hermes.publish_end_session(intent_message.session_id, data.get("message"))
@@ -189,7 +189,7 @@ class ImperiHome(object):
                 action = intent_message.slots.action.first().value
                 level = self.formatValue(action)
 
-            data = self.executeAction("setLevel", device_name, level);
+            data = self.executeAction(u"setLevel", device_name, level);
 
             if data != None and 'level' in data and 'message' in data :
                 hermes.publish_end_session(intent_message.session_id, data.get("message"))
@@ -222,12 +222,12 @@ class ImperiHome(object):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/devices/action/"+ action +"?name=" + name + "&lang=fr"
-
+            url = u"http://" + ip + u":" + port + u"/api/rest/devices/action/"+ action + u"?name=" + name + u"&lang=fr"
+            print("type url = " + str(type(url)))
             if value != None:
-                url = url + "&value=" + str(value)
+                url = url + u"&value=" + value
 
-            print('url = ' + url)
+            print('url = ' + url.encode("utf-8"))
             data = requests.post(url, timeout=2).json()
             return data
         except Exception as e:
