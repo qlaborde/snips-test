@@ -218,6 +218,9 @@ class ImperiHome(object):
 
     def executeAction(self, action, name, value):
         print('executeAction')
+
+        print('self.lang = ' + str(self.lang))
+
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
@@ -262,6 +265,11 @@ class ImperiHome(object):
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
+
+        self.lang = u'en'
+        if coming_intent.endswith('fr'):
+            self.lang = u'fr'
+
         if coming_intent.startswith('evertygo:getInfo'):
             self.getInfo_callback(hermes, intent_message)
         if coming_intent.startswith('evertygo:getTemp'):
