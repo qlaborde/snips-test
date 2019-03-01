@@ -204,7 +204,8 @@ class ImperiHome(object):
 
         try:
             # print('name = ' + name)
-            print('str(name) = ' + str(name))
+            print('str(name.encode('utf-8')) = ' + str(name.encode('utf-8')))
+            print('name.decode('utf-8') = ' + name.decode('utf-8'))
 
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
