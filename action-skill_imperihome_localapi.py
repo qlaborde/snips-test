@@ -207,13 +207,15 @@ class ImperiHome(object):
             print('str(name.encode(utf-8)) = ' + str(name.encode('utf-8')))
             # print('name.decode(utf-8) = ' + name.decode('utf-8'))
 
-            print("type = " + str(type(name)))
+            print("type name = " + str(type(name)))
 
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/devices/data?name=" + str(name.encode('utf-8')) + "&lang=en"
+            url = u"http://"+ip+u":"+port+u"/api/rest/devices/data?name=" + name.decode('utf-8') + u"&lang=en"
+            print("type url = " + str(type(url)))
+
             print('dfbvrbrnbfg')
-            print('url = ' + str(url))
+            print(u'url = ' + url)
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
             return data
