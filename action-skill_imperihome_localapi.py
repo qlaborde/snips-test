@@ -120,12 +120,15 @@ class ImperiHome(object):
         try:
             device_name = self.getDeviceName(intent_message)
 
-            status = None
+            action = None
             if len(intent_message.slots.status) > 0:
-                status = intent_message.slots.status.first().value
-                status = self.formatValue(status)
-
-            data = self.executeAction(u"setStatus", device_name, status);
+                action = intent_message.slots.status.first().value
+                action = self.formatValue(action)
+            elif len(intent_message.slots.action) > 0:
+                action = intent_message.slots.action.first().value
+                action = self.formatValue(action)
+                
+            data = self.executeAction(u"setStatus", device_name, action);
 
             if data != None and 'status' in data and 'message' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("message"))
