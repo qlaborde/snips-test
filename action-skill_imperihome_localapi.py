@@ -66,7 +66,7 @@ class ImperiHome(object):
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 1")
         except Exception as e:
-            print('e = ' + str(e))
+            print('getTemp_callback error = ' + str(e))
             hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 2")
 
     def getHum_callback(self, hermes, intent_message):
@@ -202,33 +202,22 @@ class ImperiHome(object):
 
     def getData(self, name):
         print('getData')
-
         try:
-            # print('name = ' + name)
-            print('str(name.encode(utf-8)) = ' + str(name.encode('utf-8')))
-            # print('name.decode(utf-8) = ' + name.decode('utf-8'))
-
-
+            print("name = " + name.encode("utf-8"))
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            print("type ip = " + str(type(ip)))
-            print("type port = " + str(type(port)))
-
-            # url = os.path.join("http://", ip, ":", port, "/api/rest/devices/data?name=", name, "&lang=en")
-
             url = u"http://" + ip + u":"+ port + u"/api/rest/devices/data?name=" + name + u"&lang=en"
-            print("type url = " + str(type(url)))
-
-            print('dfbvrbrnbfg')
+            # print("type url = " + str(type(url)))
             print("url = " + url.encode("utf-8"))
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
             return data
         except Exception as e:
-            print('e = ' + str(e))
+            print('getData error = ' + str(e))
             return None
 
     def executeAction(self, action, name, value):
+        print('executeAction')
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
@@ -241,7 +230,7 @@ class ImperiHome(object):
             data = requests.post(url, timeout=2).json()
             return data
         except Exception as e:
-            print('e = ' + str(e))
+            print('executeAction error = ' + str(e))
             return None
 
     def getDeviceName(self, intent_message):
