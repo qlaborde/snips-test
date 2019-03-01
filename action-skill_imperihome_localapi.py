@@ -206,7 +206,8 @@ class ImperiHome(object):
             print("name = " + name.encode("utf-8"))
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = u"http://" + ip + u":"+ port + u"/api/rest/devices/data?name=" + name + u"&lang=fr"
+            lang = self.lang
+            url = u"http://" + ip + u":"+ port + u"/api/rest/devices/data?name=" + name + u"&lang=" + lang
             # print("type url = " + str(type(url)))
             print("url = " + url.encode("utf-8"))
             data = requests.get(url, timeout=2).json()
@@ -218,13 +219,11 @@ class ImperiHome(object):
 
     def executeAction(self, action, name, value):
         print('executeAction')
-
-        print('self.lang = ' + str(self.lang))
-
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = u"http://" + ip + u":" + port + u"/api/rest/devices/action/"+ action + u"?name=" + name + u"&lang=fr"
+            lang = self.lang
+            url = u"http://" + ip + u":" + port + u"/api/rest/devices/action/"+ action + u"?name=" + name + u"&lang=" + lang
             print("type url = " + str(type(url)))
             if value != None:
                 url = url + u"&value=" + str(value).decode('utf-8')
