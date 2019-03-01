@@ -211,10 +211,12 @@ class ImperiHome(object):
 
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
+            print("type ip = " + str(type(ip)))
+            print("type port = " + str(type(port)))
 
-            url = os.path.join("http://", ip, ":", port, "/api/rest/devices/data?name=", name, "&lang=en")
+            # url = os.path.join("http://", ip, ":", port, "/api/rest/devices/data?name=", name, "&lang=en")
 
-            # url = u"http://"+ip+u":"+port+u"/api/rest/devices/data?name=" + name.decode('utf-8') + u"&lang=en"
+            url = u"http://" + ip + u":"+ port + u"/api/rest/devices/data?name=" + name + u"&lang=en"
             print("type url = " + str(type(url)))
 
             print('dfbvrbrnbfg')
