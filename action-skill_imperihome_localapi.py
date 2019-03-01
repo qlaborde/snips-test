@@ -12,14 +12,10 @@ from hermes_python.hermes import Hermes
 from hermes_python.ontology import *
 import io
 import requests
-import os
+import json
 # import sys
 
-
 CONFIG_INI = "config.ini"
-
-
-print 'truc'
 
 class ImperiHome(object):
 
@@ -152,7 +148,7 @@ class ImperiHome(object):
             data = self.executeAction(u"setLevel", device_name, value);
 
             if data != None and 'level' in data and 'message' in data :
-                hermes.publish_end_session(intent_message.session_id, data.get("message") + u" %")
+                hermes.publish_end_session(intent_message.session_id, data.get("message"))
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
@@ -266,6 +262,7 @@ class ImperiHome(object):
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
+        print("intent_message.intent = " + str(intent_message.intent))
         if coming_intent == 'evertygo:getInfo':
             self.getInfo_callback(hermes, intent_message)
         if coming_intent == 'evertygo:getTemp':
