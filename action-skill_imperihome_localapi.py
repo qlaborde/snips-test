@@ -218,7 +218,7 @@ class ImperiHome(object):
             print("type url = " + str(type(url)))
 
             print('dfbvrbrnbfg')
-            print("url = " + url.decode('unicode-escape'))
+            print("url = " + url.encode("utf-8"))
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
             return data
