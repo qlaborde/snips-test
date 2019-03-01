@@ -76,9 +76,9 @@ class ImperiHome(object):
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'hum' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("hum").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("hum").get("message"))
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device humidity 1")
         except Exception as e:
@@ -93,7 +93,7 @@ class ImperiHome(object):
             if data != None and 'status' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("status").get("message"))
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 1")
         except Exception as e:
@@ -108,7 +108,7 @@ class ImperiHome(object):
             if data != None and 'level' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("level").get("message"))
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device level 1")
         except Exception as e:
@@ -128,9 +128,9 @@ class ImperiHome(object):
             data = self.executeAction("setStatus", device_name, status);
 
             if data != None and 'status' in data and 'message' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("message"))
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't switch the device 1")
         except Exception as e:
@@ -149,9 +149,9 @@ class ImperiHome(object):
             data = self.executeAction("setLevel", device_name, value);
 
             if data != None and 'level' in data and 'message' in data :
-                hermes.publish_end_session(intent_message.session_id, str(data.get("message")) + " %")
+                hermes.publish_end_session(intent_message.session_id, data.get("message") + u" %")
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
         except Exception as e:
@@ -170,9 +170,9 @@ class ImperiHome(object):
             data = self.executeAction("setColor", device_name, color);
 
             if data != None and 'color' in data and 'message' in data :
-                hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("message"))
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device color 1")
         except Exception as e:
@@ -192,9 +192,9 @@ class ImperiHome(object):
             data = self.executeAction("setLevel", device_name, level);
 
             if data != None and 'level' in data and 'message' in data :
-                hermes.publish_end_session(intent_message.session_id, str(data.get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("message"))
             elif data != None and 'error' in data:
-                hermes.publish_end_session(intent_message.session_id, str(data.get("error").get("message")))
+                hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
         except Exception as e:
@@ -207,7 +207,7 @@ class ImperiHome(object):
             print("name = " + name.encode("utf-8"))
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = u"http://" + ip + u":"+ port + u"/api/rest/devices/data?name=" + name + u"&lang=en"
+            url = u"http://" + ip + u":"+ port + u"/api/rest/devices/data?name=" + name + u"&lang=fr"
             # print("type url = " + str(type(url)))
             print("url = " + url.encode("utf-8"))
             data = requests.get(url, timeout=2).json()
@@ -222,7 +222,7 @@ class ImperiHome(object):
         try:
             ip = self.config.get('secret').get('ip')
             port = self.config.get('secret').get('port')
-            url = "http://"+ip+":"+port+"/api/rest/devices/action/"+ action +"?name=" + name + "&lang=en"
+            url = "http://"+ip+":"+port+"/api/rest/devices/action/"+ action +"?name=" + name + "&lang=fr"
 
             if value != None:
                 url = url + "&value=" + str(value)
