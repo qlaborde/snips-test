@@ -218,7 +218,7 @@ class ImperiHome(object):
             print("type url = " + str(type(url)))
 
             print('dfbvrbrnbfg')
-            print(u'url = ' + url)
+            print('url = ' + str(url))
             data = requests.get(url, timeout=2).json()
             print('data = ' + str(data))
             return data
