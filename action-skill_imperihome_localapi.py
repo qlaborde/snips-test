@@ -200,8 +200,10 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device level 2")
 
     def getData(self, name):
+        print('getData')
+
         try:
-            print('name = ' + name)
+            # print('name = ' + name)
             print('str(name) = ' + str(name))
 
             ip = self.config.get('secret').get('ip')
