@@ -262,24 +262,23 @@ class ImperiHome(object):
     # --> Master callback function, triggered everytime an intent is recognized
     def master_intent_callback(self,hermes, intent_message):
         coming_intent = intent_message.intent.intent_name
-        print("intent_message.intent = " + str(intent_message.intent))
-        if coming_intent == 'evertygo:getInfo':
+        if coming_intent.startswith('evertygo:getInfo'):
             self.getInfo_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:getTemp':
+        if coming_intent.startswith('evertygo:getTemp'):
             self.getTemp_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:getHum':
+        if coming_intent.startswith('evertygo:getHum'):
             self.getHum_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:getStatus':
+        if coming_intent.startswith('evertygo:getStatus'):
             self.getStatus_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:getLevel':
+        if coming_intent.startswith('evertygo:getLevel'):
             self.getLevel_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:setStatus':
+        if coming_intent.startswith('evertygo:setStatus'):
             self.setStatus_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:setLevel':
+        if coming_intent.startswith('evertygo:setLevel'):
             self.setLevel_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:setColor':
+        if coming_intent.startswith('evertygo:setColor'):
             self.setColor_callback(hermes, intent_message)
-        if coming_intent == 'evertygo:setShutter':
+        if coming_intent.startswith('evertygo:setShutter'):
             self.setShutter_callback(hermes, intent_message)
 
     # --> Register callback function and start MQTT
