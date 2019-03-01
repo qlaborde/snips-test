@@ -127,7 +127,7 @@ class ImperiHome(object):
             elif len(intent_message.slots.action) > 0:
                 action = intent_message.slots.action.first().value
                 action = self.formatValue(action)
-                
+
             data = self.executeAction(u"setStatus", device_name, action);
 
             if data != None and 'status' in data and 'message' in data:
@@ -228,7 +228,7 @@ class ImperiHome(object):
             url = u"http://" + ip + u":" + port + u"/api/rest/devices/action/"+ action + u"?name=" + name + u"&lang=fr"
             print("type url = " + str(type(url)))
             if value != None:
-                url = url + u"&value=" + value
+                url = url + u"&value=" + str(value).decode('utf-8')
 
             print('url = ' + url.encode("utf-8"))
             data = requests.post(url, timeout=2).json()
