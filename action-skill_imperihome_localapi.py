@@ -66,7 +66,8 @@ class ImperiHome(object):
         url = "http://"+ip+":"+port+"/api/rest/imperihome/about"
         print('url = ' + url)
         data = requests.get(url).json();
-        hermes.publish_end_session(intent_message.session_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")))
+        # hermes.publish_end_session(intent_message.session_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")))
+        hermes.publish_end_session(intent_message.session_id, resp['fr']['test'])
 
     def getTemp_callback(self, hermes, intent_message):
         # hermes.publish_end_session(intent_message.session_id)
