@@ -19,10 +19,42 @@ CONFIG_INI = "config.ini"
 
 translations = {
     "en":{
-      "test":"english"
+        "test":"english",
+        "error_temp_data":"Sorry, I can't get the temperature for this device",
+        "error_temp_unknown":"Sorry, an error has occurred",
+        "error_hum_data":"Sorry, I can't get the humidity for this device",
+        "error_hum_unknown":"Sorry, an error has occurred",
+        "error_status_data":"Sorry, I can't get the status for this device",
+        "error_status_unknown":"Sorry, an error has occurred",
+        "error_level_data":"Sorry, I can't get the level for this device",
+        "error_level_unknown":"Sorry, an error has occurred",
+        "error_set_status":"Sorry, I can't set the status for this device",
+        "error_set_status_unknown":"Sorry, an error has occurred",
+        "error_set_level":"Sorry, I can't set the level for this device",
+        "error_set_level_unknown":"Sorry, an error has occurred",
+        "error_set_color":"Sorry, I can't set the color for this device",
+        "error_set_color_unknown":"Sorry, an error has occurred",
+        "error_set_position":"Sorry, I can't set the position for this device",
+        "error_set_position_unknown":"Sorry, an error has occurred"
     },
     "fr":{
-        "test":"french"
+        "test":"français",
+        "error_temp_data":"Désolé, je n'arrive pas à obtenir la température de cet appareil.",
+        "error_temp_unknown":"Désolé, une erreur s'est produite",
+        "error_hum_data":"Désolé, je n'arrive pas à obtenir la valeur de l'humidité pour cet appareil.",
+        "error_hum_unknown":"Désolé, une erreur s'est produite",
+        "error_status_data":"Désolé, je n'arrive pas à obtenir la statut de cet appareil.",
+        "error_status_unknown":"Désolé, une erreur s'est produite",
+        "error_level_data":"Désolé, je n'arrive pas à obtenir le niveau pour cet appareil.",
+        "error_level_unknown":"Désolé, une erreur s'est produite",
+        "error_set_status":"Désolé, je ne peux pas définir l'état de cet appareil.",
+        "error_set_status_unknown":"Désolé, une erreur s'est produite",
+        "error_set_level":"Désolé, je ne peux pas définir le niveau de cet appareil.",
+        "error_set_level_unknown":"Désolé, une erreur s'est produite",
+        "error_set_color":"Désolé, je ne peux pas définir la couleur de cet appareil.",
+        "error_set_color_unknown":"Désolé, une erreur s'est produite",
+        "error_set_position":"Désolé, je ne peux pas régler la position de cet appareil.",
+        "error_set_position_unknown":"Désolé, une erreur s'est produite"
     }
 }
 
@@ -54,20 +86,12 @@ class ImperiHome(object):
     # Get app code version
     def getInfo_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
-
-        print('self.config = ' + str(self.config))
-
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
-
-        print('ip = ' + str(ip))
-        print('port = ' + str(port))
-
         url = "http://"+ip+":"+port+"/api/rest/imperihome/about"
         print('url = ' + url)
         data = requests.get(url).json();
-        # hermes.publish_end_session(intent_message.session_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")))
-        hermes.publish_end_session(intent_message.session_id, self.t['fr']['test'])
+        hermes.publish_end_session(intent_message.session_id, "I am a "+ str(data.get("device")) +". My version name is "+ str(data.get("versionName")) +" and my version code is " + str(data.get("versionCode")))
 
     def getTemp_callback(self, hermes, intent_message):
         # hermes.publish_end_session(intent_message.session_id)
@@ -82,10 +106,10 @@ class ImperiHome(object):
                 print 'error found'
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_temp_data'])
         except Exception as e:
             print('getTemp_callback error = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device temperature 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_temp_unknown'])
 
     def getHum_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -97,10 +121,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device humidity 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_hum_data'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device humidity 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_hum_unknown'])
 
     def getStatus_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -112,10 +136,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_status_data'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_status_unknown'])
 
     def getLevel_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -127,10 +151,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device level 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_level_data'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't get the device status 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_level_unknown'])
 
     def setStatus_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -152,10 +176,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't switch the device 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_status'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't switch the device 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_status_unknown'])
 
     def setLevel_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -173,10 +197,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_level'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device level 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_level_unknown'])
 
     def setColor_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -194,10 +218,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device color 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_color'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device color 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_color_unknown'])
 
     def setShutter_callback(self, hermes, intent_message):
         print '[Received] intent: {}'.format(intent_message.intent.intent_name)
@@ -216,10 +240,10 @@ class ImperiHome(object):
             elif data != None and 'error' in data:
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
-                hermes.publish_end_session(intent_message.session_id, "Sorry, I can't set the device level 1")
+                hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_position'])
         except Exception as e:
             print('e = ' + str(e))
-            hermes.publish_end_session(intent_message.session_id, "Sorry, I can't et the device level 2")
+            hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_position_unknown'])
 
     def getData(self, name):
         print('getData')
