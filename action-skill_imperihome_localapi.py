@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 from snipsTools import SnipsConfigParser
@@ -19,27 +19,27 @@ class ImperiHome(object):
         try:
             self.config = SnipsConfigParser.read_configuration_file(CONFIG_INI)
         except :
-            print('Error : can\'t load config')
+            print 'Error : can\'t load config'
             self.config = None
 
         # Get translations json
         try:
             self.t = json.loads(json.dumps(translations))
         except :
-            print('Error : can\'t load translations')
+            print 'Error : can\'t load translations'
             self.t = None
 
         # start listening to MQTT
         if self.config != None and self.t != None:
             self.start_blocking()
         else:
-            print('Error : can\'t start blocking')
+            print 'Error : can\'t start blocking'
 
     ############### Sub callback functions ###############
 
     # Get app code version
     def getInfo_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         ip = self.config.get('secret').get('ip')
         port = self.config.get('secret').get('port')
         url = "http://"+ip+":"+port+"/api/rest/imperihome/about"
@@ -49,15 +49,15 @@ class ImperiHome(object):
 
     def getTemp_callback(self, hermes, intent_message):
         # hermes.publish_end_session(intent_message.session_id)
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
             if data != None and 'temp' in data:
-                print('temp found')
+                print 'temp found'
                 hermes.publish_end_session(intent_message.session_id, data.get("temp").get("message"))
             elif data != None and 'error' in data:
-                print('error found')
+                print 'error found'
                 hermes.publish_end_session(intent_message.session_id, data.get("error").get("message"))
             else:
                 hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_temp_data'])
@@ -66,7 +66,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_temp_unknown'])
 
     def getHum_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
@@ -81,7 +81,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_hum_unknown'])
 
     def getStatus_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
@@ -96,7 +96,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_status_unknown'])
 
     def getLevel_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
             data = self.getData(device_name)
@@ -111,7 +111,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_level_unknown'])
 
     def setStatus_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
 
@@ -136,7 +136,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_status_unknown'])
 
     def setLevel_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
 
@@ -157,7 +157,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_level_unknown'])
 
     def setColor_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
 
@@ -178,7 +178,7 @@ class ImperiHome(object):
             hermes.publish_end_session(intent_message.session_id, self.t[self.lang]['error_set_color_unknown'])
 
     def setShutter_callback(self, hermes, intent_message):
-        print('[Received] intent: {}'.format(intent_message.intent.intent_name))
+        print '[Received] intent: {}'.format(intent_message.intent.intent_name)
         try:
             device_name = self.getDeviceName(intent_message)
 
