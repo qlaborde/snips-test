@@ -17,17 +17,37 @@ import json
 
 CONFIG_INI = "config.ini"
 
+translations = {
+    "en":{
+      "test":"english"
+    },
+    "fr":{
+        "test":"french"
+    }
+}
+
 class ImperiHome(object):
 
     def __init__(self):
+        # Get config
         try:
             self.config = SnipsConfigParser.read_configuration_file(CONFIG_INI)
         except :
+            print 'Error : can\'t load config'
             self.config = None
-            # sys.exit(1)
+
+        # Get translations json
+        try:
+            self.t = json.loads(json.dumps(translations))
+        except :
+            print 'Error : can\'t load translations'
+            self.t = None
 
         # start listening to MQTT
-        self.start_blocking()
+        if self.config != None and self.t != None:
+            self.start_blocking()
+        else:
+            print 'Error : can\'t start blocking'
 
     ############### Sub callback functions ###############
 
